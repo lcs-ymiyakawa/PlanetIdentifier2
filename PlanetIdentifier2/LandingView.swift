@@ -30,7 +30,7 @@ struct LandingView: View {
     var body: some View {
         
         HStack {
-
+            
             // Left side
             VStack {
                 Image(currentItem.imageName)
@@ -39,26 +39,15 @@ struct LandingView: View {
                 
                 HStack {
                     TextField("Enter the name of the item", text: $userGuess)
-
+                    
                     Text(currentOutcome.rawValue)
                 }
-                    
-                HStack {
                 
-                    Button {
-                        checkGuess()
-                    } label: {
-                        Text("Submit")
-                    }
-                    
-                    Button {
-                        newWord()
-                    } label: {
-                        Text("New word")
-                    }
-
-
-                    
+                
+                Button {
+                    checkGuess()
+                } label: {
+                    Text("Submit")
                 }
                 
             }
@@ -66,7 +55,7 @@ struct LandingView: View {
             
             // Right side
             VStack {
-               
+                
                 // Picker to select what outcome to show
                 Picker("Filtering on", selection: $selectedOutcomeFilter) {
                     // Options that show up in the picker
@@ -79,11 +68,11 @@ struct LandingView: View {
                 List(
                     
                     filtering(originalList: history, on: selectedOutcomeFilter)
-
+                    
                 ) { currentResult in
                     
                     HStack {
-
+                        
                         Image(currentResult.item.imageName)
                             .resizable()
                             .scaledToFit()
@@ -94,16 +83,16 @@ struct LandingView: View {
                         Spacer()
                         
                         Text(currentResult.outcome.rawValue)
-         
+                        
                     }
-                   
+                    
                 }
-
+                
                 
             }
             
             
-
+            
             
         }
         
@@ -118,26 +107,28 @@ struct LandingView: View {
             currentOutcome = .incorrect
             print("Incorrect")
         }
-    }
-    
-    func newWord() {
+        
         
         // Save the prior result
-        history.insert(
-            Result(
-                item: currentItem,
-                guessProvided: userGuess,
-                outcome: currentOutcome
-            ),
-            at: 0
-        )
-        // DEBUG: What is in the array now?
-        print(history)
+        withAnimation(Animation.easeOut(duration: 2)) {
+            history.insert(
+                Result(
+                    item: currentItem,
+                    guessProvided: userGuess,
+                    outcome: currentOutcome
+                ),
+                at: 0
+            )
+            
+            // DEBUG: What is in the array now?
+            print(history)
+            
+            // Picks a new word
+            currentItem = itemsToSpell.randomElement()!
+            userGuess = ""
+            currentOutcome = .undetermined
+        }
         
-        // Picks a new word
-        currentItem = itemsToSpell.randomElement()!
-        userGuess = ""
-        currentOutcome = .undetermined
     }
     
 }
