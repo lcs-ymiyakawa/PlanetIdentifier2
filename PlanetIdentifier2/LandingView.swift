@@ -29,71 +29,73 @@ struct LandingView: View {
     // MARK: Computed properties
     var body: some View {
         
-        HStack {
-            
-            // Left side
-            VStack {
-                Image(currentItem.imageName)
-                    .resizable()
-                    .scaledToFit()
+        ZStack {
+            Color.black
+            HStack {
                 
-                HStack {
-                    TextField("Enter the name of the item", text: $userGuess)
-                    
-                    Text(currentOutcome.rawValue)
-                }
-                
-                
-                Button {
-                    checkGuess()
-                } label: {
-                    Text("Submit")
-                }
-                
-            }
-            .padding()
-            
-            // Right side
-            VStack {
-                
-                // Picker to select what outcome to show
-                Picker("Filtering on", selection: $selectedOutcomeFilter) {
-                    // Options that show up in the picker
-                    Text("All results").tag(Outcome.undetermined)
-                    Text("Correct").tag(Outcome.correct)
-                    Text("Incorrect").tag(Outcome.incorrect)
-                }
-                
-                // List of previous outcomes
-                List(
-                    
-                    filtering(originalList: history, on: selectedOutcomeFilter)
-                    
-                ) { currentResult in
+                // Left side
+                VStack {
+                    Image(currentItem.imageName)
+                        .resizable()
+                        .scaledToFit()
                     
                     HStack {
+                        TextField("Enter the name of the item", text: $userGuess)
                         
-                        Image(currentResult.item.imageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 50)
+                        Text(currentOutcome.rawValue)
+                    }
+                    
+                    
+                    Button {
+                        checkGuess()
+                    } label: {
+                        Text("Submit")
+                    }
+                    
+                }
+                .padding()
+                
+                // Right side
+                VStack {
+                    
+                    // Picker to select what outcome to show
+                    Picker("Filtering on", selection: $selectedOutcomeFilter) {
+                        // Options that show up in the picker
+                        Text("All results").tag(Outcome.undetermined)
+                        Text("Correct").tag(Outcome.correct)
+                        Text("Incorrect").tag(Outcome.incorrect)
+                    }
+                    
+                    // List of previous outcomes
+                    List(
                         
-                        Text(currentResult.guessProvided)
+                        filtering(originalList: history, on: selectedOutcomeFilter)
                         
-                        Spacer()
+                    ) { currentResult in
                         
-                        Text(currentResult.outcome.rawValue)
+                        HStack {
+                            
+                            Image(currentResult.item.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 50)
+                            
+                            Text(currentResult.guessProvided)
+                            
+                            Spacer()
+                            
+                            Text(currentResult.outcome.rawValue)
+                            
+                        }
                         
                     }
                     
                 }
                 
                 
+                
+                
             }
-            
-            
-            
-            
         }
         
     }
